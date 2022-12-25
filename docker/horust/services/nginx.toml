@@ -1,0 +1,27 @@
+command = "nginx"
+start-delay = "2s"
+stdout = "STDOUT"
+stderr = "STDERR"
+user = "deploy"
+working-directory = "/"
+start-after = ["fpm.toml"]
+
+[restart]
+strategy = "on-failure"
+backoff = "1s"
+attempts = 10
+
+[healthiness]
+file-path = "/run/nginx/nginx.pid"
+max-failed = 10
+
+[failure]
+successful-exit-code = [ 0]
+strategy = "shutdown"
+
+[termination]
+signal = "TERM"
+wait = "10s"
+
+[environment]
+keep-env = false
