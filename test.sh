@@ -8,12 +8,14 @@ checkUrl() {
     set +e
     if [ "$2" = "form" ]; then
         curl -# --cookie-jar /tmp/test.cookie-jar -b /tmp/test.cookie-jar --fail \
+        -s \
         -H 'Content-Type: application/x-www-form-urlencoded' \
         -L \
         --data-raw "${3}" \
         "$1"
     else
         curl -# --cookie-jar /tmp/test.cookie-jar -b /tmp/test.cookie-jar --fail \
+            -s \
             ${2:-} \
             -H 'Content-Type: application/x-www-form-urlencoded' \
             "$1"
