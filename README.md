@@ -1,4 +1,4 @@
-# A Docker phpldapadmin image
+# A Docker [phpLDAPadmin](https://github.com/leenooks/phpLDAPadmin) image
 
 This image uses:
 
