@@ -6,7 +6,7 @@ DID_FAIL=0
 
 checkUrl() {
     set +e
-    if [ "$2" = "form" ]; then
+    if [ "${2:-}" = "form" ]; then
         curl -# --cookie-jar /tmp/test.cookie-jar -b /tmp/test.cookie-jar --fail \
         -s \
         -H 'Content-Type: application/x-www-form-urlencoded' \
