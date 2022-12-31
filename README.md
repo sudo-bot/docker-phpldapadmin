@@ -1,5 +1,9 @@
 # A Docker phpldapadmin image
 
+## TODO
+
+- SSL support
+
 ## Usage
 
 Note: you need to login to ghcr.io using your GitHub account:
@@ -13,7 +17,7 @@ version: "2.3"
 
 services:
     phpldapadmin:
-        image: botsudo/docker-phpldapadmin
+        image: ghcr.io/sudo-bot/docker-phpldapadmin/docker-phpldapadmin:latest
         environment:
             PHPLDAPADMIN_LDAP_HOSTS: "#PYTHON2BASH:[{'ldap-server': [{'server': [{'tls': False}]},{'login': [{'bind_id': 'cn=admin,dc=example,dc=org'}]}]}]"
         depends_on:
