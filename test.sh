@@ -36,8 +36,8 @@ checkUrl "http://${TEST_ADDR}/.phpfpm/status" -I
 checkUrl "http://${TEST_ADDR}/index.php" -I
 checkUrl "http://${TEST_ADDR}/robots.txt" -I
 
-checkUrl "http://${TEST_ADDR}/index.php" -L | grep -q -F "1.2.6.4"
-checkUrl "http://${TEST_ADDR}/htdocs/cmd.php" "form" "cmd=login&server_id=1&nodecode%5Blogin_pass%5D=1&login=cn%3Dadmin%2Cdc%3Dexample%2Cdc%3Dorg&login_pass=ldapadminpass&submit=Authenticate" | grep -q -F "Successfully logged into server."
+checkUrl "http://${TEST_ADDR}/index.php" | grep -q -F "1.2.6.4"
+checkUrl "http://${TEST_ADDR}/cmd.php" "form" "cmd=login&server_id=1&nodecode%5Blogin_pass%5D=1&login=cn%3Dadmin%2Cdc%3Dexample%2Cdc%3Dorg&login_pass=ldapadminpass&submit=Authenticate" | grep -q -F "Successfully logged into server."
 
 if [ $DID_FAIL -gt 0 ]; then
     echo "Some URLs failed"
