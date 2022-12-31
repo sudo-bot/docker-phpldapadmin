@@ -1,8 +1,20 @@
 # A Docker phpldapadmin image
 
+This image uses:
+
+- Alpine as a base image
+- [Horsut](https://github.com/FedericoPonzi/Horust#readme) to manage the services
+- Nginx as a web server with PHP-FPM
+- [Rust Python](https://github.com/RustPython/RustPython) to provide a single binary for `PYTHON2BASH` to work
+
 ## TODO
 
 - SSL support
+- HTTPS support
+
+### Supported ENVs
+
+- `PHPLDAPADMIN_LDAP_HOSTS` (Only `#PYTHON2BASH:` format)
 
 ## Usage
 
