@@ -3,7 +3,7 @@
 This image uses:
 
 - Alpine as a base image
-- [Horsut](https://github.com/FedericoPonzi/Horust#readme) to manage the services
+- [Horust](https://github.com/FedericoPonzi/Horust#readme) to manage the services
 - Nginx as a web server with PHP-FPM
 - [Rust Python](https://github.com/RustPython/RustPython) to provide a single binary for `PYTHON2BASH` to work
 
