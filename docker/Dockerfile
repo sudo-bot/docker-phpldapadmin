@@ -1,6 +1,6 @@
 FROM alpine:3.17
 
-ARG VERSION="1.2.6.4"
+ARG VERSION="1.2.6.5"
 ARG DIST_URL="https://github.com/leenooks/phpLDAPadmin/archive/refs/tags/${VERSION}.tar.gz"
 ARG BUILD_DATE
 ARG VCS_REF
@@ -54,10 +54,6 @@ RUN curl -# -L -o phpldapadmin.tar.gz ${DIST_URL} && \
     tar -xzf phpldapadmin.tar.gz -C /var/www/phpldapadmin --strip-components=1 && \
     rm phpldapadmin.tar.gz && \
     rm -vr ./doc/ ./.gitignore ./*.md && \
-    # See: https://github.com/leenooks/phpLDAPadmin/issues/166
-    echo "RELEASE-${VERSION}" > ./VERSION && \
-    # See: https://github.com/leenooks/phpLDAPadmin/issues/165
-    sed -i -e "/Check the memory limit parameter/,+6d" lib/functions.php && \
     php -l lib/functions.php
 
 # Metadata
