@@ -28,8 +28,26 @@ COPY <<-EOT /usr/local/share/sbom/rustpython.spdx.json
             "SPDXID": "SPDXRef-Package-binary-rustpython-${RUST_PYTHON_VERSION}",
             "versionInfo": "${RUST_PYTHON_VERSION}",
             "downloadLocation": "https://hub.docker.com/r/dclong/rustpython",
-            "sourceInfo": "copied from dclong/rustpython:alpine Docker image",
+            "sourceInfo": "copied from dclong/rustpython:alpine Docker image, source at: https://github.com/RustPython/RustPython",
+            "licenseConcluded": "MIT",
+            "licenseDeclared": "MIT",
+            "copyrightText": "NOASSERTION",
             "description": "rustpython"
+        }
+    ],
+    "files": [
+        {
+            "SPDXID": "SPDXRef-rustpython-${RUST_PYTHON_VERSION}",
+            "licenseConcluded": "MIT",
+            "fileName": "/usr/local/bin/rustpython",
+            "fileType": "BINARY"
+        }
+    ],
+    "relationships": [
+        {
+            "spdxElementId": "SPDXRef-Package-binary-rustpython-${RUST_PYTHON_VERSION}",
+            "relationshipType": "CONTAINS",
+            "relatedSpdxElement": "SPDXRef-rustpython-${RUST_PYTHON_VERSION}"
         }
     ]
 }
