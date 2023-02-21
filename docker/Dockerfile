@@ -1,9 +1,11 @@
+# syntax=docker/dockerfile:1
 FROM alpine:3.17
 
 ARG VERSION="1.2.6.5"
 ARG DIST_URL="https://github.com/leenooks/phpLDAPadmin/archive/refs/tags/${VERSION}.tar.gz"
 ARG BUILD_DATE
 ARG VCS_REF
+ARG RUST_PYTHON_VERSION
 
 # Set user and group
 ARG user=deploy
@@ -13,6 +15,25 @@ ENV CONTAINER_SERVICE_DIR="/container/service"
 ENV FIRST_START_DONE="/container/first-start-done"
 
 COPY --from=dclong/rustpython:alpine /usr/local/bin/rustpython /usr/local/bin/rustpython
+
+COPY <<-EOT /usr/local/share/sbom/rustpython.spdx.json
+{
+    "spdxVersion": "SPDX-2.3",
+    "dataLicense": "CC0-1.0",
+    "SPDXID": "SPDXRef-DOCUMENT",
+    "name": "docker-rustpython",
+    "packages": [
+        {
+            "name": "rustpython",
+            "SPDXID": "SPDXRef-Package-binary-rustpython-${RUST_PYTHON_VERSION}",
+            "versionInfo": "${RUST_PYTHON_VERSION}",
+            "downloadLocation": "https://hub.docker.com/r/dclong/rustpython",
+            "sourceInfo": "copied from dclong/rustpython:alpine Docker image",
+            "description": "rustpython"
+        }
+    ]
+}
+EOT
 
 RUN apk add --no-cache --update nginx curl bash musl \
     openssl libgcc \
@@ -47,6 +68,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY php-fpm-www-pool.conf /etc/php81/php-fpm.d/www.conf
 COPY --chown=deploy:deploy config.php ${CONTAINER_SERVICE_DIR}/phpldapadmin/assets/config/config.php
 
+
 # Switch to user
 USER deploy:deploy
 
@@ -56,12 +78,52 @@ RUN curl -# -L -o phpldapadmin.tar.gz ${DIST_URL} && \
     rm -vr ./doc/ ./.gitignore ./*.md && \
     php -l lib/functions.php
 
+COPY <<-EOT /usr/local/share/sbom/phpldapadmin.spdx.json
+{
+    "spdxVersion": "SPDX-2.3",
+    "dataLicense": "CC0-1.0",
+    "SPDXID": "SPDXRef-DOCUMENT",
+    "name": "docker-phpldapadmin",
+    "packages": [
+        {
+            "name": "phpldapadmin",
+            "SPDXID": "SPDXRef-Package-phpldapadmin",
+            "versionInfo": "${VERSION}",
+            "originator": "Person: Deon George",
+            "downloadLocation": "${DIST_URL}",
+            "sourceInfo": "dowloaded from GitHub releases",
+            "licenseConcluded": "GPL-2.0-or-later",
+            "licenseDeclared": "GPL-2.0-or-later",
+            "copyrightText": "NOASSERTION",
+            "description": "phpLDAPadmin"
+        }
+    ],
+    "externalRefs": [
+        {
+            "referenceCategory": "SECURITY",
+            "referenceLocator": "cpe:2.3:a:phpldapadmin_project:phpldapadmin",
+            "referenceType": "cpe23Type"
+        },
+        {
+            "referenceCategory": "SECURITY",
+            "referenceLocator": "cpe:/a:phpldapadmin_project:phpldapadmin",
+            "referenceType": "cpe22Type"
+        },
+        {
+            "referenceCategory": "PACKAGE_MANAGER",
+            "referenceLocator": "pkg:deb/debian/phpldapadmin",
+            "referenceType": "purl"
+        }
+    ]
+}
+EOT
+
 # Metadata
 LABEL org.label-schema.vendor="Sudo-Bot" \
     org.label-schema.url="https://github.com/sudo-bot/docker-phpldapadmin#readme" \
     org.label-schema.name="docker-phpldapadmin" \
-    org.label-schema.description="A phpldapadmin image" \
-    org.label-schema.version=${RELEASE_VERSION} \
+    org.label-schema.description="A phpLDAPadmin image" \
+    org.label-schema.version=${VERSION} \
     org.label-schema.vcs-url="https://github.com/sudo-bot/docker-phpldapadmin.git" \
     org.label-schema.vcs-ref=${VCS_REF} \
     org.label-schema.build-date=${BUILD_DATE} \
@@ -69,7 +131,7 @@ LABEL org.label-schema.vendor="Sudo-Bot" \
     \
     com.docker.extension.publisher-url="https://github.com/sudo-bot" \
     \
-    org.opencontainers.image.title="Docker phpldapadmin server" \
+    org.opencontainers.image.title="Docker phpLDAPadmin server" \
     org.opencontainers.image.authors="williamdes@wdes.fr" \
     org.opencontainers.image.url="https://github.com/sudo-bot/docker-phpldapadmin#readme" \
     org.opencontainers.image.documentation="https://github.com/sudo-bot/docker-phpldapadmin#readme" \
@@ -77,7 +139,7 @@ LABEL org.label-schema.vendor="Sudo-Bot" \
     org.opencontainers.image.vendor="Sudo-Bot" \
     org.opencontainers.image.licenses="MPL-2.0" \
     org.opencontainers.image.created=${BUILD_DATE} \
-    org.opencontainers.image.version=${RELEASE_VERSION} \
+    org.opencontainers.image.version=${VERSION} \
     org.opencontainers.image.revision=${VCS_REF} \
     org.opencontainers.image.ref.name="${VERSION}"
 
