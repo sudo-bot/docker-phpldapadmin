@@ -15,7 +15,6 @@ docker-build:
 	docker buildx build \
 		--build-arg VCS_REF=`git rev-parse HEAD` \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-		--build-arg RUST_PYTHON_VERSION=`docker run -q --rm dclong/rustpython:alpine --version | cut -d ' ' -f 2` \
 		--tag $(IMAGE_TAG) \
 		--progress $(PROGRESS_MODE) \
 		--platform $(PLATFORM) \

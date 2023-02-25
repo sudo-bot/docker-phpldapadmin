@@ -5,7 +5,6 @@ ARG VERSION="1.2.6.5"
 ARG DIST_URL="https://github.com/leenooks/phpLDAPadmin/archive/refs/tags/${VERSION}.tar.gz"
 ARG BUILD_DATE
 ARG VCS_REF
-ARG RUST_PYTHON_VERSION
 
 # Set user and group
 ARG user=deploy
@@ -14,44 +13,8 @@ ARG group=deploy
 ENV CONTAINER_SERVICE_DIR="/container/service"
 ENV FIRST_START_DONE="/container/first-start-done"
 
-COPY --from=dclong/rustpython:alpine /usr/local/bin/rustpython /usr/local/bin/rustpython
-
-COPY <<-EOT /usr/local/share/sbom/rustpython.spdx.json
-{
-    "spdxVersion": "SPDX-2.3",
-    "dataLicense": "CC0-1.0",
-    "SPDXID": "SPDXRef-DOCUMENT",
-    "name": "docker-rustpython",
-    "packages": [
-        {
-            "name": "rustpython",
-            "SPDXID": "SPDXRef-Package-binary-rustpython-${RUST_PYTHON_VERSION}",
-            "versionInfo": "${RUST_PYTHON_VERSION}",
-            "downloadLocation": "https://hub.docker.com/r/dclong/rustpython",
-            "sourceInfo": "copied from dclong/rustpython:alpine Docker image, source at: https://github.com/RustPython/RustPython",
-            "licenseConcluded": "MIT",
-            "licenseDeclared": "MIT",
-            "copyrightText": "NOASSERTION",
-            "description": "rustpython"
-        }
-    ],
-    "files": [
-        {
-            "SPDXID": "SPDXRef-rustpython-${RUST_PYTHON_VERSION}",
-            "licenseConcluded": "MIT",
-            "fileName": "/usr/local/bin/rustpython",
-            "fileType": "BINARY"
-        }
-    ],
-    "relationships": [
-        {
-            "spdxElementId": "SPDXRef-Package-binary-rustpython-${RUST_PYTHON_VERSION}",
-            "relationshipType": "CONTAINS",
-            "relatedSpdxElement": "SPDXRef-rustpython-${RUST_PYTHON_VERSION}"
-        }
-    ]
-}
-EOT
+COPY --from=botsudo/docker-rustpython:latest /usr/local/bin/rustpython /usr/local/bin/rustpython
+COPY --from=botsudo/docker-rustpython:latest /usr/local/share/sbom/rustpython.spdx.json /usr/local/share/sbom/rustpython.spdx.json
 
 RUN apk add --no-cache --update nginx curl bash musl \
     openssl libgcc \
@@ -150,6 +113,7 @@ LABEL org.label-schema.vendor="Sudo-Bot" \
     com.docker.extension.publisher-url="https://github.com/sudo-bot" \
     \
     org.opencontainers.image.title="Docker phpLDAPadmin server" \
+    org.opencontainers.image.description="A phpLDAPadmin image" \
     org.opencontainers.image.authors="williamdes@wdes.fr" \
     org.opencontainers.image.url="https://github.com/sudo-bot/docker-phpldapadmin#readme" \
     org.opencontainers.image.documentation="https://github.com/sudo-bot/docker-phpldapadmin#readme" \
