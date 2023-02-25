@@ -34,5 +34,5 @@ jobs:
                 PLATFORM: ${{ matrix.platform }}
 
             - name: Test image
-              if: ${{ matrix.platform == "linux/amd64" }}
+              if: ${{ matrix.platform == 'linux/amd64' }}
               run: make docker-test
