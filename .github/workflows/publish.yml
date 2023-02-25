@@ -24,12 +24,14 @@ jobs:
                   password: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Build image
-              run: IMAGE_TAG="ghcr.io/sudo-bot/docker-phpldapadmin/docker-phpldapadmin" make docker-build
+              run: make docker-build
               env:
                   DOCKER_BUILDKIT: 1
+                  PLATFORM: linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/386,linux/ppc64le,linux/amd64
+                  IMAGE_TAG: ghcr.io/sudo-bot/docker-phpldapadmin/docker-phpldapadmin
+                  ACTION: push
 
             - name: Test image
-              run: IMAGE_TAG="ghcr.io/sudo-bot/docker-phpldapadmin/docker-phpldapadmin" make docker-test
-
-            - name: Push to GitHub Packages
-              run: docker push ghcr.io/sudo-bot/docker-phpldapadmin/docker-phpldapadmin:latest
+              run: make docker-test
+              env:
+                  IMAGE_TAG: ghcr.io/sudo-bot/docker-phpldapadmin/docker-phpldapadmin
