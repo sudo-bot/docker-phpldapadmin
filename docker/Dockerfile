@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM alpine:3.17
+FROM alpine:3.18
 
 ARG VERSION="1.2.6.6"
 ARG DIST_URL="https://github.com/williamdes/phpLDAPadmin/archive/refs/heads/fix-null-import.tar.gz"
