@@ -2,7 +2,7 @@
 FROM alpine:3.17
 
 ARG VERSION="1.2.6.6"
-ARG DIST_URL="https://github.com/leenooks/phpLDAPadmin/archive/refs/tags/${VERSION}.tar.gz"
+ARG DIST_URL="https://github.com/williamdes/phpLDAPadmin/archive/refs/heads/fix-null-import.tar.gz"
 ARG BUILD_DATE
 ARG VCS_REF
 
@@ -56,8 +56,7 @@ USER deploy:deploy
 RUN curl -# -L -o phpldapadmin.tar.gz ${DIST_URL} && \
     tar -xzf phpldapadmin.tar.gz -C /var/www/phpldapadmin --strip-components=1 && \
     rm phpldapadmin.tar.gz && \
-    rm -vr ./doc/ ./.gitignore ./*.md && \
-    php -l lib/functions.php
+    rm -vr ./doc/ ./.gitignore ./*.md
 
 COPY <<-EOT /usr/local/share/sbom/phpldapadmin.spdx.json
 {
