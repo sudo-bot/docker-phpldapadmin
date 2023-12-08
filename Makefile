@@ -13,8 +13,8 @@ all: docker-build docker-test
 docker-build:
 	# https://github.com/docker/buildx#building
 	docker buildx build \
-		--build-arg VCS_REF=`git rev-parse HEAD` \
-		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+		--build-arg VCS_REF="$(shell git rev-parse HEAD)" \
+		--build-arg BUILD_DATE="$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")" \
 		--tag $(IMAGE_TAG) \
 		--progress $(PROGRESS_MODE) \
 		--platform $(PLATFORM) \
