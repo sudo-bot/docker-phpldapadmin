@@ -2,7 +2,7 @@
 FROM alpine:3.18
 
 ARG VERSION="1.2.6.6"
-ARG DIST_URL="https://github.com/williamdes/phpLDAPadmin/archive/refs/heads/fix-null-import.tar.gz"
+ARG DIST_URL="https://github.com/williamdes/phpLDAPadmin/archive/refs/heads/patches.tar.gz"
 ARG BUILD_DATE
 ARG VCS_REF
 
