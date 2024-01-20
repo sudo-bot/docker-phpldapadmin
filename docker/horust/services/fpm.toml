@@ -1,4 +1,4 @@
-command = "php-fpm81 -F"
+command = "php-fpm82 -F"
 start-delay = "2s"
 stdout = "STDOUT"
 stderr = "STDERR"
