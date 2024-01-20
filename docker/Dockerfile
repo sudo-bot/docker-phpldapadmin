@@ -6,6 +6,9 @@ ARG DIST_URL="https://github.com/leenooks/phpLDAPadmin/archive/refs/tags/${VERSI
 ARG BUILD_DATE
 ARG VCS_REF
 
+ARG PHP_VERSION_MAJOR="8"
+ARG PHP_VERSION_MINOR="2"
+
 # Set user and group
 ARG user=deploy
 ARG group=deploy
@@ -18,22 +21,22 @@ COPY --from=botsudo/docker-rustpython:latest /usr/local/share/sbom/rustpython.sp
 
 RUN apk add --no-cache --update nginx curl bash musl \
     openssl libgcc \
-    php81-fpm php81 php81-session \
-    php81-json php81-curl php81-xml php81-gettext php81-mbstring php81-ldap php81-ctype && \
+    php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-fpm php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR} php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-session \
+    php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-json php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-curl php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-xml php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-gettext php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-mbstring php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-ldap php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-ctype && \
     apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing horust && \
-    horust --help && nginx -v && php-fpm81 -v && php -v && \
-    mkdir -p /var/log/php81 && \
+    horust --help && nginx -v && php-fpm${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR} -v && php -v && \
+    mkdir -p /var/log/php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR} && \
     mkdir /run/phpfpm && \
     ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log && \
-    ln -sf /dev/stderr /var/log/php81/error.log && \
+    ln -sf /dev/stderr /var/log/php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}/error.log && \
     date -R > /build_date && \
     printf '{"build_date": "%s", "timestamp": %i}' "$(date -R)" "$(date +%s)" > /build_date.json && \
     addgroup -S ${group} && \
     adduser -G ${group} -G nginx -s /bin/sh -h /var/www/phpldapadmin -S ${user} && \
     id deploy && \
-    chown -R deploy:deploy /var/log/php81 /var/lib/nginx /run/nginx /run/phpfpm && \
-    chmod -R 770 /var/log/php81 /var/lib/nginx /run/nginx /run/phpfpm && \
+    chown -R deploy:deploy /var/log/php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR} /var/lib/nginx /run/nginx /run/phpfpm && \
+    chmod -R 770 /var/log/php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR} /var/lib/nginx /run/nginx /run/phpfpm && \
     mkdir /container && \
     chown deploy:deploy /container && \
     rustpython --help
@@ -46,7 +49,7 @@ COPY pythontojson.py /usr/local/sbin/
 COPY --chown=deploy:deploy horust/ /etc/horust/
 COPY nginx-default.conf /etc/nginx/http.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY php-fpm-www-pool.conf /etc/php81/php-fpm.d/www.conf
+COPY php-fpm-www-pool.conf /etc/php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}/php-fpm.d/www.conf
 COPY --chown=deploy:deploy config.php ${CONTAINER_SERVICE_DIR}/phpldapadmin/assets/config/config.php
 
 
