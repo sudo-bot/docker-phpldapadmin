@@ -6,6 +6,7 @@ ARG DIST_URL="https://github.com/leenooks/phpLDAPadmin/archive/refs/tags/${VERSI
 ARG BUILD_DATE
 ARG VCS_REF
 
+# Remember to also change in horust/services/fpm.toml
 ARG PHP_VERSION_MAJOR="8"
 ARG PHP_VERSION_MINOR="2"
 
