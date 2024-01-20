@@ -17,7 +17,8 @@ jobs:
             fail-fast: false
             max-parallel: 4
             matrix:
-                platform: ["linux/386", "linux/arm/v6", "linux/arm/v7", "linux/arm64/v8", "linux/386", "linux/ppc64le", "linux/amd64", "linux/s390x"]
+                # "linux/s390x" -> depends on rustpython
+                platform: ["linux/386", "linux/arm/v6", "linux/arm/v7", "linux/arm64/v8", "linux/ppc64le", "linux/amd64"]
         steps:
             - name: Checkout repository
               uses: actions/checkout@v4
