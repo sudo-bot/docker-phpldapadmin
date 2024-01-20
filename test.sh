@@ -37,7 +37,7 @@ checkUrl "http://${TEST_ADDR}/index.php" -I
 checkUrl "http://${TEST_ADDR}/robots.txt" -I
 checkUrl "http://${TEST_ADDR}/images/default/logo-small.png" -I | grep -F "Cache-Control: max-age=315360000"
 
-checkUrl "http://${TEST_ADDR}/index.php" | grep -q -F "1.2.6.6"
+checkUrl "http://${TEST_ADDR}/index.php" | grep -q -F "1.2.6.7"
 checkUrl "http://${TEST_ADDR}/cmd.php" "form" "cmd=login&server_id=1&nodecode%5Blogin_pass%5D=1&login=cn%3Dadmin%2Cdc%3Dexample%2Cdc%3Dorg&login_pass=ldapadminpass&submit=Authenticate" | grep -q -F "Successfully logged into server."
 
 if [ $DID_FAIL -gt 0 ]; then
