@@ -29,10 +29,10 @@ test: run-test cleanup-test
 run-test:
 	TEST_ADDR="${TEST_ADDR}" \
 	IMAGE_TAG="${IMAGE_TAG}" \
-	docker-compose -f docker-compose-latest.test.yml up --exit-code-from=sut --abort-on-container-exit
+	docker compose -f docker-compose-latest.test.yml up --exit-code-from=sut --abort-on-container-exit
 
 cleanup-test:
 	@echo "Stopping and removing the container"
 	TEST_ADDR="${TEST_ADDR}" \
 	IMAGE_TAG="${IMAGE_TAG}" \
-	docker-compose -f docker-compose-latest.test.yml down
+	docker compose -f docker-compose-latest.test.yml down
