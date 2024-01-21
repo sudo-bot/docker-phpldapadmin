@@ -20,7 +20,7 @@ ENV FIRST_START_DONE="/container/first-start-done"
 COPY --from=botsudo/docker-rustpython:latest /usr/local/bin/rustpython /usr/local/bin/rustpython
 COPY --from=botsudo/docker-rustpython:latest /usr/local/share/sbom/rustpython.spdx.json /usr/local/share/sbom/rustpython.spdx.json
 
-RUN apk add --no-cache --update nginx curl bash musl \
+RUN apk add --no-cache --update nginx curl bash musl patch \
     openssl libgcc \
     php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-fpm php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR} php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-session \
     php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-json php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-curl php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-xml php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-gettext php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-mbstring php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-ldap php${PHP_VERSION_MAJOR}${PHP_VERSION_MINOR}-ctype && \
@@ -60,6 +60,8 @@ USER deploy:deploy
 RUN curl -# -L -o phpldapadmin.tar.gz ${DIST_URL} && \
     tar -xzf phpldapadmin.tar.gz -C /var/www/phpldapadmin --strip-components=1 && \
     rm phpldapadmin.tar.gz && \
+    wget https://sources.debian.org/data/main/p/phpldapadmin/1.2.6.6-2/debian/patches/Fix-dynamic-property-PHP-8.2.patch && \
+    patch -p 1 -f < ./Fix-dynamic-property-PHP-8.2.patch && \
     rm -vr ./doc/ ./.gitignore ./*.md
 
 COPY <<-EOT /usr/local/share/sbom/phpldapadmin.spdx.json
