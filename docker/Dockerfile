@@ -62,6 +62,7 @@ RUN curl -# -L -o phpldapadmin.tar.gz ${DIST_URL} && \
     rm phpldapadmin.tar.gz && \
     wget https://sources.debian.org/data/main/p/phpldapadmin/1.2.6.6-2/debian/patches/Fix-dynamic-property-PHP-8.2.patch && \
     patch -p 1 -f < ./Fix-dynamic-property-PHP-8.2.patch && \
+    printf "RELEASE-${VERSION}" > ./VERSION && \
     rm -vr ./doc/ ./.gitignore ./*.md
 
 COPY <<-EOT /usr/local/share/sbom/phpldapadmin.spdx.json
